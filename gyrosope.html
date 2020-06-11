@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            width:100%;
+            height:100vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            background-color:black;
+        } 
+
+        .wrapper {
+            perspective: 15px;
+        }
+
+        #tiltable {
+            height:400px;
+            transition: transform 0.5s;
+            backface-visibility: hidden;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <img id="tiltable" src="https://i.iplsc.com/zdj-ilustracyjne/0006DVXSTLL51M5U-C122-F4.jpg"/>
+    </div>
+    <script>
+        let counter = 0;
+        const updateRate = 10;
+        const limit = 45;
+        const tiltable = document.getElementById("tiltable");
+
+        function updateNow() {
+            return counter++ % updateRate === 0;
+        };
+
+        window.addEventListener("deviceorientation", function(event) {
+        if (updateNow()) {
+            let position = Math.round(event.gamma);
+            if (Math.abs(position) > limit) {
+            if (position > limit) {
+                    position = limit;
+                } else {
+                    position = -limit;
+                        }
+                }
+            position = position / -100;
+            let style = "rotateY(" + position + "deg)";
+            tiltable.style.transform = style;
+            }
+        });
+    </script>
+</body>
+</html>
